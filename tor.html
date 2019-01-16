@@ -1,0 +1,336 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+<meta charset="utf-8"/>  
+<title>Eryk</title>  
+<style>  
+body{  
+margin:0 0;
+background-color: #545454;
+height: 100vh;
+text-align: center;
+}
+#plansza, #checker{
+	border: 1px solid #000;
+	background-color: #496;
+	position: absolute;
+	border-radius: 254px;
+	left: 300px;
+	top: 100px;
+}
+#checker {
+	display: none;
+}
+#pres {
+	position: absolute;
+	left: 25px;
+	top: 50px;
+	font-size: 25px;
+}
+p {
+	margin-top: 0;
+	letter-spacing: 20px;
+	margin-left: 23px;
+}
+button {
+	width: 80px;
+}
+h1 {
+	font-size: 25px;
+	color: gold;
+}
+#infoXD {
+		display: none;
+		background-color: rgba(0,0,0,0.8);
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 100vw;
+		height: 100vh;
+		overflow: hidden;
+		font-size: 25px;
+		font-weight: bold;
+	}
+</style>
+</head>  
+<body>
+	<div id="pres">
+		Ilu graczy(2-4)?<br>
+		<input type="range" min="2" max="4" value="2">
+		<p>2 3 4</p>
+		<button onclick="set()" type="button">Zatwierdź</button></div>
+	</div>
+	<canvas id="plansza" width="800" height="500"></canvas>
+	<canvas id="checker" width="800" height="500"></canvas>
+	<div id="infoXD"></div>
+<script>
+	var graczy;
+	rate = 1000/60;
+	var controls = [];
+	var count= 0;
+	var s1= 0;
+	var s2= 0;
+	var s3= 0;
+	var s4= 0;
+	var r1= 0;
+	var r2= 0;
+	var r3= 0;
+	var r4= 0;
+	var time=0;
+	//------------
+	var ctx = document.getElementById("plansza").getContext("2d");
+	var check = document.getElementById("checker").getContext("2d");
+	check.beginPath();
+	check.fillStyle="#000";
+	check.fillRect(0,0,800,500);
+	check.closePath();
+	//------------
+	check.beginPath();
+	check.arc(250,250,249,0.5*Math.PI,1.5*Math.PI);
+	check.arc(550,250,249,1.5*Math.PI,0.5*Math.PI);
+	check.fillStyle="#f00";
+	check.fill();
+	check.lineTo(250,499);
+	check.stroke();
+	//------------
+	check.beginPath();
+	check.arc(250,250,125,0.5*Math.PI,1.5*Math.PI);
+	check.arc(550,250,125,1.5*Math.PI,0.5*Math.PI);
+	check.fillStyle="#000";
+	check.fill();
+	check.lineTo(250,375);
+	check.stroke(); 
+	//------------
+	ctx.beginPath();
+	ctx.arc(250,250,249,0.5*Math.PI,1.5*Math.PI);
+	ctx.arc(550,250,249,1.5*Math.PI,0.5*Math.PI);
+	ctx.fillStyle="#999";
+	ctx.fill();
+	ctx.lineTo(250,499);
+	ctx.stroke();
+	//------------
+	ctx.beginPath();
+	ctx.arc(250,250,125,0.5*Math.PI,1.5*Math.PI);
+	ctx.arc(550,250,125,1.5*Math.PI,0.5*Math.PI);
+	ctx.fillStyle="#494";
+	ctx.fill();
+	ctx.lineTo(250,375);
+	ctx.stroke(); 
+	//------------
+	var posit1 = [400,400];
+	var posit2 = [400,425];
+	var posit3 = [400,450];
+	var posit4 = [400,475];
+	//------------
+	function update1 () {
+	if(r1<3)
+		r1+=0.02;
+	else
+		r1=3;
+	ctx.beginPath();
+	ctx.moveTo(posit1[0],posit1[1]);
+	posit1[0]+=r1*Math.cos(s1);
+    posit1[1]+=r1*Math.sin(s1);
+    ctx.lineTo(posit1[0],posit1[1]);
+    var img_d=check.getImageData(posit1[0],posit1[1],1,1).data[0];
+	ctx.lineWidth = 5;
+	ctx.strokeStyle="#a11";
+	ctx.stroke();
+    if(img_d == 0)
+    	lose('1');
+    else
+    	setTimeout(update1, rate);
+}
+	//------------
+	function update2 () {
+	if(r2<3)
+		r2+=0.02;
+	else
+		r2=3;
+	ctx.beginPath();
+	ctx.moveTo(posit2[0],posit2[1]);
+	posit2[0]+=r2*Math.cos(s2);
+    posit2[1]+=r2*Math.sin(s2);
+    ctx.lineTo(posit2[0],posit2[1]);
+    var img_d=check.getImageData(posit2[0],posit2[1],1,1).data[0];
+	ctx.lineWidth = 5;
+	ctx.strokeStyle="#1a1";
+	ctx.stroke();
+    if(img_d == 0)
+    	lose('2');
+    else
+    	setTimeout(update2, rate);
+}
+	//------------
+	function update3 () {
+	if(r3<3)
+		r3+=0.02;
+	else
+		r3=3;
+	ctx.beginPath();
+	ctx.moveTo(posit3[0],posit3[1]);
+	posit3[0]+=r3*Math.cos(s3);
+    posit3[1]+=r3*Math.sin(s3);
+    ctx.lineTo(posit3[0],posit3[1]);
+    var img_d=check.getImageData(posit3[0],posit3[1],1,1).data[0];
+	ctx.lineWidth = 5;
+	ctx.strokeStyle="#11a";
+	ctx.stroke();
+    if(img_d == 0)
+    	lose('3');
+    else
+    	setTimeout(update3, rate);
+}
+	//------------
+	function update4 () {
+	if(r4<3)
+		r4+=0.02;
+	else
+		r4=3;
+	ctx.beginPath();
+	ctx.moveTo(posit4[0],posit4[1]);
+	posit4[0]+=r4*Math.cos(s4);
+    posit4[1]+=r4*Math.sin(s4);
+    ctx.lineTo(posit4[0],posit4[1]);
+    var img_d=check.getImageData(posit4[0],posit4[1],1,1).data[0];
+	ctx.lineWidth = 5;
+	ctx.strokeStyle="#bb1";
+	ctx.stroke();
+	ctx.closePath();
+    if(img_d == 0)
+    	lose('4');
+    else
+    	setTimeout(update4, rate);
+}
+	//------------
+	var controls = [];
+function set () {
+	graczy = parseInt(document.getElementsByTagName('input')[0].value);
+	var g =document.getElementById('pres');
+	g.innerHTML = "Ustawienia Przycisków: <br> Gracz 1: <br> <button id='l1'>Lewo</button> <button id='p1'>Prawo</button> <br> Gracz 2: <br> <button id='l2'>Lewo</button> <button id='p2'>Prawo</button>"
+	switch(graczy){
+		case 3:
+			g.innerHTML+= "<br> Gracz 3: <br> <button id='l3'>Lewo</button> <button id='p3'>Prawo</button>";
+			break;
+		case 4:
+			g.innerHTML+= "<br> Gracz 3: <br> <button id='l3'>Lewo</button> <button id='p3'>Prawo</button><br> Gracz 4: <br> <button id='l4'>Lewo</button> <button id='p4'>Prawo</button>";
+			break;
+	}
+	g.innerHTML += "<br><input onclick='update()' type='submit' value='Zatwierdź'/>"
+	var buttons = document.getElementsByTagName("button");
+	for (var i = 0; i < buttons.length; i++) {
+    	buttons[i].onclick = function(e) {
+    	var x = true;
+    	that = this;
+        alert('Wciśnij klawisz do gry!');
+        document.onkeydown = function(e) {
+        	if(x)
+        		that.innerHTML = e.keyCode, x=false;
+		};
+    	};
+	}
+}
+function update () {
+	for(var i=1 ; i<=graczy; i++){
+		var g1 =document.getElementById('l'+i).innerHTML;
+		var g2 = document.getElementById('p'+i).innerHTML;
+		g1 = parseInt(g1);
+		g2 = parseInt(g2);
+		controls.push(g1);
+		controls.push(g2);
+	}
+	document.getElementById('pres').innerHTML = "";
+	switch(graczy){
+		case 4:
+			setTimeout(update4, 1000);
+		case 3:
+			setTimeout(update3, 1000);
+		default:
+			setTimeout(update2, 1000);
+			setTimeout(update1, 1000);
+			break;
+	}
+	document.onkeydown = function(e) {
+			console.log(e.keyCode)
+    		switch(e.keyCode){
+    			case controls[0]:
+    				s1-=0.15;
+    				r1-=0.1;
+    				if(r1<0.1)
+    					r1=0.1;
+    				break;
+    			case controls[1]:
+    				s1+=0.15;
+    				r1-=0.1;
+    				if(r1<0.1)
+    					r1=0.1;
+    				break;
+    			case controls[2]:
+    				s2-=0.15;
+    				r2-=0.1;
+    				if(r2<0.1)
+    					r2=0.1;
+    				break;
+    			case controls[3]:
+    				s2+=0.15;
+    				r2-=0.1;
+    				if(r2<0.1)
+    					r2=0.1;
+    				break;
+    			case controls[4]:
+    				s3-=0.15;
+    				r3-=0.1;
+    				if(r3<0.1)
+    					r3=0.1;
+    				break;
+    			case controls[5]:
+    				s3+=0.15;
+    				r3-=0.1;
+    				if(r3<0.1)
+    					r3=0.1;
+    				break;
+    			case controls[6]:
+    				s4-=0.15;
+    				r4-=0.1;
+    				if(r4<0.1)
+    					r4=0.1;
+    				break;
+    			case controls[7]:
+    				s4+=0.15;
+    				r4-=0.1;
+    				if(r4<0.1)
+    					r4=0.1;
+    				break;
+    		}
+    	
+};
+}
+function lose (x) {
+	document.getElementById('pres').innerHTML += "<h1>Odpada Gracz: "+x+'</h1><br>';
+	count++;
+	if(count==graczy-1)
+		inf('Koniec gry :)');
+}
+function inf (check) {
+				var con = document.getElementById("infoXD");
+				con.style.display="block";
+				var alpha = 1;
+				function decay (){
+				var x = document.createElement("DIV");
+                x.setAttribute("style","background: rgba(51,25,0,"+alpha+"); height: 20vh; width: 100%; position: relative; top: 40vh; left: 0px; text-align: center;")
+                alpha-=0.01;
+                var g = document.createElement("SPAN");
+                g.setAttribute("style","color: red; position: relative; top: 9vh;")
+                g.innerHTML = check;
+                if(con.childNodes[0]!==undefined){
+					con.childNodes[0].childNodes[0].remove(g);
+					con.childNodes[0].remove(x);}
+                con.appendChild(x).appendChild(g);
+                if(alpha>0){
+                setTimeout(decay, 20)}else{
+               	location.reload(true)};
+            	}
+            	decay();
+}
+</script>
+</body>  
